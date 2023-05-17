@@ -3,10 +3,16 @@ let botao = document.getElementById("resetbtn");
 let textospace = document.getElementById("textocont");
 let acc = 0;
 let konamiMode = false;
+let muted = false;
+let konamiclick = document.getElementById("konamiclick");
+let konamicomplete = document.getElementById("konamicomplete");
+const muteicon = document.getElementById("muteicon");
 
 document.addEventListener("keydown", function (e) {
   if (e.code === "Space") {
-    if (konamiMode) {clickSong()}
+    if (konamiMode) {
+      clickSong();
+    }
     acc++;
     contador.textContent = acc;
     atualizarExibicao();
@@ -17,20 +23,25 @@ botao.addEventListener("click", function (e) {
   atualizarExibicao();
 });
 
-function atualizarExibicao() {
-  if (acc === 0) {
-    botao.style.display = "none";
-    textospace.style.display = "flex";
-  } else {
-    botao.style.display = "flex";
-    textospace.style.display = "none";
+document.addEventListener("keydown", function (e) {
+  if (e.key === "m") {
+    if (muted == false) {
+      kc1 = document.getElementById("konamiclick");
+      kc2 = document.getElementById("konamicomplete");
+      kc1.volume = 0;
+      kc2.volume = 0;
+      muteicon.style.opacity = 0.4;
+      muted = true;
+    } else {
+      kc1 = document.getElementById("konamiclick");
+      kc2 = document.getElementById("konamicomplete");
+      kc1.volume = 1;
+      kc2.volume = 0.6;
+      muteicon.style.opacity = 0;
+      muted = false;
+    }
   }
-}
-
-function resetarAcc() {
-  acc = 0;
-  contador.textContent = acc;
-}
+});
 
 // Função KonamiCode
 const konamiCode = [
@@ -64,20 +75,18 @@ function konamiChanges() {
   blinkFont();
   song();
   konamiMode = true;
-
-  
 }
 
 function clickSong() {
-  const sound = document.getElementById("konamiclick");
-  sound.currentTime = 0;
-  sound.play();
+  kc = document.getElementById("konamiclick");
+  kc.currentTime = 0;
+  kc.play();
 }
 
 function song() {
-  const sound = document.getElementById("konamicomplete");
-  sound.currentTime = 0;
-  sound.play();
+  kc = document.getElementById("konamicomplete");
+  kc.currentTime = 0;
+  kc.play();
 }
 
 function blinkFont() {
@@ -106,4 +115,19 @@ function blinkFont() {
     updateFont();
     checkTime();
   }, interval);
+}
+
+function resetarAcc() {
+  acc = 0;
+  contador.textContent = acc;
+}
+
+function atualizarExibicao() {
+  if (acc === 0) {
+    botao.style.display = "none";
+    textospace.style.display = "flex";
+  } else {
+    botao.style.display = "flex";
+    textospace.style.display = "none";
+  }
 }
